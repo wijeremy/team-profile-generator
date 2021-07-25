@@ -1,78 +1,50 @@
 const inquirer = require("inquirer");
 const employee = require('./constructor.js')
+const prompt = require('./prompts')
 
-
-const collectInputs = async (inputs = []) => {
-    // const prompts = [
-    //   {
-    //     type: 'input',
-    //     name: 'inputValue',
-    //     message: 'Enter some input: '
-    //   },
-    //   {
-    //     type: 'confirm',
-    //     name: 'again',
-    //     message: 'Enter another input? ',
-    //     default: true
-    //   }
-    // ];
-    const prompts = [
-        {
-            type: 'input',
-            name: 'name',
-            message: 'What is their?'
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: 'What is their id?'
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'What is their email?'
-        },
-    ]
-
-    const managerPrompt = {
-        type: 'input',
-        name: 'phone',
-        message: 'What is the office phone number?'
+const collectInputs = async (inputs = [], prompt) => {
+    const selectEmployee = async (inputs = []) => {
+        console.log(`So far we have ${inputs}`)
+        const { role } = await inquirer.prompt(select);
+        console.log(role)
+        if (role === "Engineer"){
+            console.log('So you want to add an engineer?')
+            collectInputs(inputs, engineerPrompt)
+        } else if (role === "Intern"){
+            console.log('So you want to add an intern?')
+            collectInputs(inputs, internPrompt)
+        } else {
+            console.log("here you goooooo")
+            return inputs;
+        }
     }
+    console.log("Let's start with the manager:")
+    let newPrompts = [...prompts, prompt, confirm]
+    let { again, ...answers } = await inquirer.prompt(newPrompts);
+    if (orompt === managerPrompt) {
+        let manager = new employee.Manager(answers.name, answers.id, answers.email, answers.phone)
+        let managerAdded = [...inputs, manager];
+        return again ? selectEmployee(managerAdded) : managerAdded;
+    } else if (prompt === engineerPrompt) {
+        let engineer = new employee.Engineer(answers.name, answers.id, answers.email, answers.github);
+        let engineerAdded = [...inputs, engineer];
+        return again ? selectEmployee(engineerAdded) : engineerAdded;
+    } else if (prompt === internPrompt) {
+        let intern = new employee.Intern(answers.name, answers.id, answers.email, answers.school);
+        let internAdded = [...inputs, intern];
+        return again ? selectEmployee(internAdded) : internAdded;
+    } else {
+        console.log("here you go:")
+        return inputs
+    }  
+    
+};
 
-    const engineerPrompt = {
-        type: 'input',
-        name: 'github',
-        message: 'What is their github username?'
-    }
 
-    const internPrompt = {
-        type: 'input',
-        name: 'school',
-        message: 'What school are the currently attending?'
-    }
-
-    const confirm = {
-        type: 'list',
-        name: 'again',
-        message: 'Would you like to add another employee?',
-        choices: ['Engineer', 'Intern', 'No']
-    }
-
-    let newPrompts = prompts
- 
-    if (!inputs) {
-        console.log("Let's start by adding a manager:")
-        newPrompts.push(managerPrompt).push(confirm)
-    } 
-    const { again, ...answers } = await inquirer.prompt(prompts);
-    const newInputs = [...inputs, answers];
-    return again ? collectInputs(newInputs) : newInputs;
-  };
   
   const main = async () => {
     const inputs = await collectInputs();
-    console.log(inputs);
+    console.log(`the final results are ${inputs}`);
   };
   
   main();
