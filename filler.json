@@ -14,8 +14,15 @@
        "role": "Engineer"
     },
     {
+      "name": "Robert Gray",
+      "id": "3",
+      "email": "asfdasdf@gmail.com",
+      "github": "budy",
+      "role": "Engineer"
+   },
+   {
        "name": "Rupert Green",
-       "id": "3",
+       "id": "4",
        "email": "rupeG@gmail.com",
        "github": "rupeg",
        "role": "Engineer"
