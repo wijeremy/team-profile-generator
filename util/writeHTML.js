@@ -1,11 +1,9 @@
 const fs = require('fs');
-const filler = require('./filler.json');
-const topFile = './util/top.txt';
-const cardFile = './util/card.txt';
-const botFile = './util/bot.txt';
-const myObj = filler[0];
-
-// console.log(filler)
+// const filler = require('../filler.json');
+const topFile = './top.txt';
+const cardFile = './card.txt';
+const botFile = './bot.txt';
+// const myObj = filler[0];
 
 replaceText = (fullText, oldText, newText) => {
     let arr = fullText.split(oldText);
@@ -62,12 +60,10 @@ const setCards = async (objArr) => {
     myLoop();
 }
 
-setCards(filler)
-
 const writeHTML = (data) => {
     readAppend(topFile, 'index.html');
     setCards(data);
     readAppend(botFile, 'index.html')
 }
 
-
+module.exports = writeHTML()
