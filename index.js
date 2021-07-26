@@ -1,8 +1,6 @@
 const inquirer = require("inquirer");
-const { Manager } = require("./constructor.js");
-const employee = require('./constructor.js')
-const promptsFile = require('./prompts')
-const { base, managerPrompt, engineerPrompt, internPrompt, select } = promptsFile
+const { Manager, Engineer, Intern } = require('./constructor.js')
+const { base, managerPrompt, engineerPrompt, internPrompt, select } = require('./prompts')
 
 const collectInputs = async (inputs = [], rolePrompt) => {
     const getPrompt = (promptName) => {
@@ -17,11 +15,11 @@ const collectInputs = async (inputs = [], rolePrompt) => {
     const { nextRole, ...answers } = await inquirer.prompt(myPrompts);
     const setRole = (currentPrompt) => {
         if (currentPrompt === managerPrompt){
-            return new employee.Manager(...Object.values(answers))
+            return new Manager(...Object.values(answers))
         } else if (currentPrompt === engineerPrompt){
-            return new employee.Engineer(...Object.values(answers))
+            return new Engineer(...Object.values(answers))
         } else if (currentPrompt === internPrompt){
-            return new employee.Intern(...Object.values(answers))
+            return new Intern(...Object.values(answers))
         } else {
             return answers
         }
@@ -40,8 +38,7 @@ const collectInputs = async (inputs = [], rolePrompt) => {
     const nextPrompt = getNextPrompt(nextRole);
     return nextPrompt ? collectInputs(newInputs, nextPrompt) : newInputs;
 };
-
-  
+ 
 const main = async () => {
     const inputs = await collectInputs();
     console.log(inputs)
