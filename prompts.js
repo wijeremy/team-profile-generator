@@ -34,26 +34,17 @@ const internPrompt = {
     message: 'What school are the currently attending?'
 }
 
-const confirm = {
-    type: 'confirm',
-    name: 'again',
-    message: 'Would you like to add another employee?',
-    default: true
-}
-
 const select = {
     type: 'list',
-    name: 'role',
-    message: 'What role would you like to add?',
-    choices: ['Engineer', 'Intern']
-
-}
+    name: 'nextRole',
+    message: 'Enter another employee? ',
+    choices: ['Engineer', 'Intern', 'No']
+  }
 
 module.exports = {
     base: base,
     managerPrompt: managerPrompt,
     engineerPrompt: engineerPrompt,
     internPrompt: internPrompt,
-    confirm: confirm,
     select: select
 }

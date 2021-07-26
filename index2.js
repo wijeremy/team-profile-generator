@@ -1,32 +1,37 @@
 const inquirer = require("inquirer");
 const employee = require('./constructor.js')
-const prompt = require('./prompts')
+const promptsFile = require('./prompts')
+const { base, managerPrompt, engineerPrompt, internPrompt, select } = promptsFile
 
-
-const collectInputs = async (inputs = []) => {
-    const prompts = [
-      {
-        type: 'input',
-        name: 'inputValue',
-        message: 'Enter some input: '
-      },
-      {
-        type: 'confirm',
-        name: 'again',
-        message: 'Enter another input? ',
-        default: true
-      }
-    ];
-  
-    const { again, ...answers } = await inquirer.prompt(prompts);
+const collectInputs = async (inputs = [], rolePrompt) => {
+    const getPrompt = (promptName) => {
+        if (!promptName) {
+            return managerPrompt;
+        } else {
+            return rolePrompt;
+        }
+    }
+    const myPrompt = getPrompt(rolePrompt);
+    const myPrompts = [...base, myPrompt, select];
+    const { nextRole, ...answers } = await inquirer.prompt(myPrompts);
+    const getNextPrompt = (roleName) => {
+        if (roleName === 'Engineer'){
+            return engineerPrompt
+        } else if (roleName === 'Intern') {
+            return internPrompt
+        } else {
+            return false
+        }
+    }
+    const nextPrompt = getNextPrompt(nextRole);
     const newInputs = [...inputs, answers];
-    return again ? collectInputs(newInputs) : newInputs;
-  };
+    return nextPrompt ? collectInputs(newInputs, nextPrompt) : newInputs;
+};
 
   
 const main = async () => {
     const inputs = await collectInputs();
-    console.log(`the final results are ${inputs}`);
+    console.log(inputs)
 };
   
 main();
