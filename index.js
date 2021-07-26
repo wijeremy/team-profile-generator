@@ -1,6 +1,7 @@
+const fs = require("fs");
 const inquirer = require("inquirer");
-const { Manager, Engineer, Intern } = require('./constructor.js')
-const { base, managerPrompt, engineerPrompt, internPrompt, select } = require('./prompts')
+const { Manager, Engineer, Intern } = require('./util/constructors.js')
+const { base, managerPrompt, engineerPrompt, internPrompt, select } = require('./util/prompts')
 
 const collectInputs = async (inputs = [], rolePrompt) => {
     const getPrompt = (promptName) => {
