@@ -12,11 +12,15 @@ const topFile = './util/HTMLTemplates/top.txt';
 const cardFile = './util/HTMLTemplates/card.txt';
 const botFile = './util/HTMLTemplates/bot.txt';
 
+//returns a string with all instances of one bit of text replaced by
+//used for replacing variables in our html
 replaceText = (fullText, oldText, newText) => {
   let arr = fullText.split(oldText);
   return arr.join(newText);
 };
 
+//this is a promisified combo function that reads from a source and append
+//to our index.html file (basically copy pastes content from our txt files)
 const readAppend = (source) => {
   return new Promise((resolve, reject) => {
     fs.readFile(source, 'utf8', (err, data) => {
@@ -32,16 +36,10 @@ const readAppend = (source) => {
   });
 };
 
-// const readAppend = (source) => {
-//     fs.readFile(source, 'utf8', (err, data) => {
-//         if (err){
-//             throw err;
-//         };
-//         fs.appendFile('index.html', `${data}\n`, (err) =>
-//             err? console.error(err) : console.log('Success!')
-//         )
-//     });
-// };
+//this is used after we gather all the imputs from our prompt
+//we use the replace text here to replace the variables in our txt card file
+//with the answers from out prompt. it also appends the full, replaced text
+//to index.html
 const populateCard = (obj) => {
   return new Promise((resolve, reject) => {
     fs.readFile(cardFile, 'utf8', (err, data) => {
@@ -69,55 +67,10 @@ const populateCard = (obj) => {
     });
   });
 };
-// const populateCard = (obj, source) => {
-//   fs.readFile(source, 'utf8', (err, data) => {
-//     if (err) {
-//       throw err;
-//     }
 
-//     const { name, id, email, role, phone } = obj;
-
-//     let arr = Object.keys(obj);
-//     const key = arr[3];
-//     const value = obj[key];
-
-// data = replaceText(data, '${name}', name);
-// data = replaceText(data, '${role}', role);
-// data = replaceText(data, '${id}', id);
-// data = replaceText(data, '${email}', email);
-// data = replaceText(data, '${key}', key);
-// data = replaceText(data, '${value}', value);
-
-//     fs.appendFile('index.html', `${data}\n`, (err) =>
-//       err ? console.error(err) : console.log('Success!')
-//     );
-//   });
-// };
-
-// const setCards = async (objArr) => {
-//   objArr.map((i) => {
-//     try {
-//       await populateCard(i, cardFile, 'index.html');
-//     } catch (err) {
-//       err;
-//     }
-//   });
-// };
-
-// const setCards = (objArr) => {
-//   let i = 0;
-//   const myLoop = () => {
-//     setTimeout(() => {
-//       populateCard(objArr[i], cardFile, 'index.html');
-//       i++;
-//       if (i < objArr.length) {
-//         myLoop();
-//       }
-//     }, 50);
-//   };
-//   myLoop();
-// };
-
+//this is our prompt function. it will ask for information about the manager first, and
+//then give the option to add either an engineer or an intern
+//the final output is an array of employees
 const collectInputs = async (inputs = [], rolePrompt) => {
   const getPrompt = (promptName) => {
     if (!promptName) {
@@ -155,6 +108,7 @@ const collectInputs = async (inputs = [], rolePrompt) => {
   return nextPrompt ? collectInputs(newInputs, nextPrompt) : newInputs;
 };
 
+//here we collect inputs, write a header, populate our cards, and finally write a footer
 const main = async () => {
   try {
     const inputs = await collectInputs();
