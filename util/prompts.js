@@ -1,4 +1,4 @@
-const base = [
+const basePrompts = [
     {
         type: 'input',
         name: 'name',
@@ -42,7 +42,7 @@ const select = {
   }
 
 module.exports = {
-    base: base,
+    basePrompts: basePrompts,
     managerPrompt: managerPrompt,
     engineerPrompt: engineerPrompt,
     internPrompt: internPrompt,
