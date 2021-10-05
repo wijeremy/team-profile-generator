@@ -46,7 +46,7 @@ const populateCard = (obj) => {
       if (err) {
         throw err;
       }
-      const { name, id, email, role, phone } = obj;
+      const { name, id, email, role } = obj;
 
       let arr = Object.keys(obj);
       const key = arr[3];
